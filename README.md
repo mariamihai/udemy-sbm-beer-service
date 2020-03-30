@@ -1,3 +1,3 @@
-#SBM Beer Service
+# SBM Beer Service
 
 Spring Boot Microservice project
