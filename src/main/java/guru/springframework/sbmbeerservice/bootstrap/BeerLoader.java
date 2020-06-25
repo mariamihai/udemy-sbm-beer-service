@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component
+//@Component
 public class BeerLoader implements CommandLineRunner {
 
     private final BeerRepository beerRepository;
@@ -25,6 +25,7 @@ public class BeerLoader implements CommandLineRunner {
         loadBeerObjects();
     }
 
+    // Using data.sql for inserting initial data instead
     private void loadBeerObjects() {
         if(beerRepository.count() == 0) {
             beerRepository.save(Beer.builder()
