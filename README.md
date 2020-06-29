@@ -18,3 +18,9 @@ The initial project was split in 3 microservices:
 | SBM Beer Service [current project] | 8080 |
 | [SBM  Beer Order Service](https://github.com/mariamihai/udemy-sbm-beer-order-service) | 8081 |
 | [SBM Beer Inventory Service](https://github.com/mariamihai/udemy-sbm-beer-inventory-service) | 8082 |
+
+### MySQL related
+I am using a db running locally in a Docker Container. Check the Docker Hub [MySQL page](https://hub.docker.com/_/mysql).
+
+Start a new MySQL instance:
+docker run -p 3306:3306 --name beer-mysql -e MYSQL_ROOT_PASSWORD=root_pass -d mysql:8
