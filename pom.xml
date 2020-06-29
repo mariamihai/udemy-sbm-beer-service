@@ -6,13 +6,19 @@
     <parent>
         <groupId>com.github.sfg-beer-works</groupId>
         <artifactId>sfg-brewery-bom</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.7</version>
     </parent>
 
     <artifactId>sbm-beer-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sbm-beer-service</name>
     <description>Spring Boot Microservices with Spring Cloud - SBM Beer Service</description>
+
+    <developers>
+        <developer>
+            <name>Maria Mihai</name>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
