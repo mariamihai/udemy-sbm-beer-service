@@ -1,6 +1,6 @@
 package guru.springframework.sbmbeerservice.services.inventory;
 
-import guru.springframework.sbmbeerservice.services.inventory.model.BeerInventoryDto;
+import guru.springframework.sbmbeerservice.web.model.events.BeerInventoryDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;

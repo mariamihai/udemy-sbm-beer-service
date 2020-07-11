@@ -1,4 +1,4 @@
-package guru.springframework.sbmbeerservice.services.inventory.model;
+package guru.springframework.sbmbeerservice.web.model.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
