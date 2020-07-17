@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,19 +25,21 @@ public class BrewingService {
     private final JmsTemplate jmsTemplate;
     private final BeerMapper beerMapper;
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 600000)
     public void checkForLowInventory() {
         List<Beer> beers = beerRepository.findAll();
 
         beers.forEach(beer -> {
-            Integer onHandInventory = beerInventoryService.getOnHandInventory(beer.getId());
+            Optional<Integer> optionalOnHandInventory = beerInventoryService.getOnHandInventory(beer.getId());
 
-            log.debug("Min. on hand should be: " + beer.getMinOnHand());
-            log.debug("Current inventory is: " + onHandInventory);
+            optionalOnHandInventory.ifPresent(onHandInventory -> {
+                log.debug("Min. on hand should be: " + beer.getMinOnHand());
+                log.debug("Current inventory is: " + onHandInventory);
 
-            if(isLowOnBeer(beer.getMinOnHand(), onHandInventory)) {
-                brewMoreInventory(beer);
-            }
+                if(isLowOnBeer(beer.getMinOnHand(), onHandInventory)) {
+                    brewMoreInventory(beer);
+                }
+            });
         });
     }
 

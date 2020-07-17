@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.Socket;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -37,16 +39,36 @@ public class BeerInventoryServiceRestTemplateImpl implements BeerInventoryServic
     }
 
     @Override
-    public Integer getOnHandInventory(UUID beerId) {
+    public Optional<Integer> getOnHandInventory(UUID beerId) {
         log.debug("Calling Inventory Service for " + beerId);
 
-        ResponseEntity<List<BeerInventoryDto>> responseEntity = restTemplate
-                .exchange(beerInventoryServiceHost + inventoryPath, HttpMethod.GET, null,
-                        new ParameterizedTypeReference<List<BeerInventoryDto>>(){}, (Object) beerId);
+        if(isValidConnection()) {
+            ResponseEntity<List<BeerInventoryDto>> responseEntity = restTemplate
+                    .exchange(beerInventoryServiceHost + inventoryPath, HttpMethod.GET, null,
+                            new ParameterizedTypeReference<List<BeerInventoryDto>>(){}, (Object) beerId);
 
-        return Objects.requireNonNull(responseEntity.getBody())
-                .stream()
-                .mapToInt(BeerInventoryDto::getQuantityOnHand)
-                .sum();
+            return Optional.of(Objects.requireNonNull(responseEntity.getBody())
+                    .stream()
+                    .mapToInt(BeerInventoryDto::getQuantityOnHand)
+                    .sum());
+        }
+
+        return Optional.empty();
+    }
+
+    private boolean isValidConnection() {
+        try {
+            Socket clientSocket =
+                    new Socket(beerInventoryServiceHost.split(":")[1].replace("//", ""),
+                               Integer.parseInt(beerInventoryServiceHost.split(":")[2]));
+            clientSocket.close();
+        } catch (Exception e) {
+            log.error("Cannot connect to the Inventory Service");
+            // TODO: uncomment
+//            log.error("Cannot connect to the Inventory Service", e);
+            return false;
+        }
+
+        return true;
     }
 }
