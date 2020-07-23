@@ -6,10 +6,12 @@ import guru.springframework.sbmbeerservice.web.model.events.ValidateBeerOrderRes
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
+import javax.jms.ConnectionFactory;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,5 +42,15 @@ public class JmsConfig {
         typeIdMappings.put(ValidateBeerOrderResult.class.getSimpleName(), ValidateBeerOrderResult.class);
 
         return typeIdMappings;
+    }
+
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                          JmsErrorHandler errorHandler) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setErrorHandler(errorHandler);
+
+        return factory;
     }
 }
