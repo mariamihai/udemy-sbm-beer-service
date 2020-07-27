@@ -24,7 +24,6 @@ import java.util.UUID;
 public class BeerInventoryServiceRestTemplateImpl implements BeerInventoryService {
 
     private String beerInventoryServiceHost;
-    public static final String INVENTORY_PATH = "/api/v1/beer/{beerId}/inventory";
 
     private final RestTemplate restTemplate;
 
