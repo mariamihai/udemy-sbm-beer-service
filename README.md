@@ -35,3 +35,8 @@ docker run -it --rm -p 8161:8161 -p 61616:61616 vromero/activemq-artemis
 ```
 
 Check the docker project [here](https://github.com/vromero/activemq-artemis-docker/blob/master/README.md).
+
+#### Zipkin
+```
+docker run -p 9411:9411 openzipkin/zipkin
+```
