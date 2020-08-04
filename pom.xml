@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.github.sfg-beer-works</groupId>
         <artifactId>sfg-brewery-bom</artifactId>
-        <version>1.0.13</version>
+        <version>1.0.17</version>
     </parent>
 
     <artifactId>sbm-beer-service</artifactId>
@@ -19,6 +19,10 @@
             <name>Maria Mihai</name>
         </developer>
     </developers>
+
+    <properties>
+        <docker.image.prefix>mariamihai</docker.image.prefix>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -39,5 +43,4 @@
             <artifactId>ehcache</artifactId>
         </dependency>
     </dependencies>
-
 </project>
