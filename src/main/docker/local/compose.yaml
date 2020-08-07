@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  jms:
+    image: vromero/activemq-artemis
+    ports:
+      - 8161:8161
+      - 61616:61616
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
+  eureka:
+    image: mariamihai/sbm-brewery-eureka
+    ports:
+      - 8761:8761
+  config:
+    image: mariamihai/sbm-config-server
+    ports:
+      - 8888:8888
+    depends_on:
+      - eureka
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: 'true'
+  inventory-service:
+    image: mariamihai/sbm-beer-inventory-service
+    ports:
+      - 8082:8082
+    depends_on:
+      - eureka
+      - config
+      - jms
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: 'true'
+      SPRING_PROFILES_ACTIVE: local, local-discovery
+      SPRING_ZIPKIN_BASEURL: http://zipkin
+      SPRING_ARTEMIS_HOST: jms
+
+
+
+#  mysql-brewery:
+#    image: mysql:8
+#    ports:
+#      - 3306:3306
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root_pass
+
+#       docker run -p 3306:3306 --name beer-mysql -e MYSQL_ROOT_PASSWORD=root_pass -d mysql:8
