@@ -4,6 +4,19 @@
 # SBM Beer Service
 Spring Boot Microservice project.
 
+  - [Description](#description)
+  - [API version](#api-version)
+  - [Docker images](#docker-images)
+  - [Implementation details](#implementation-details)
+    - [Properties](#properties)
+    - [Environment variables for running locally](#environment-variables-for-running-locally)
+    - [API calls](#api-calls)
+      - [Obtain all beers](#obtain-all-beers)
+      - [Obtain beer by id](#obtain-beer-by-id)
+      - [Obtain beer by upc](#obtain-beer-by-upc)
+      - [Save new beer](#save-new-beer)
+      - [Update beer](#update-beer)
+
 ## Description
 The current project is part of the "Spring Boot Microservices with Spring Cloud" [Udemy course](https://www.udemy.com/course/spring-boot-microservices-with-spring-cloud-beginner-to-guru/). 
 
@@ -14,7 +27,7 @@ Different types of beer can be added and verified.
 
 An overview of all the projects involved can be found [here](https://github.com/mariamihai/udemy-sbm-overview).
 
-## API Version
+## API version
 _V1_ is the current implementation. No changes to the project are expected to be made in the future that will affect 
 the existing endpoints.
 
@@ -26,9 +39,8 @@ For automatic building of Docker images check the next projects:
 - for [CircleCI](https://github.com/mariamihai/CIToDockerExampleProject)
 - for [TravisCI](https://github.com/mariamihai/sma-overview) (all projects implemented under the "Spring Microservices in Action" book)
 
-## Implementation Details
+## Implementation details
 ### Properties
-Important Spring properties:
 - the name of the application, used by Eureka and the other services 
 ```
 spring.application.name=beer-service
@@ -124,7 +136,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
     
     ```
     
-##### Save new beer
+#### Save new beer
  * __URI:__ _/api/v1/beer/_
 
  * __Method:__ _POST_
@@ -148,7 +160,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
        
        ```
     
-##### Update beer
+#### Update beer
  * __URI:__ _/api/v1/beer/:beerId_
 
  * __Method:__ _PUT_
