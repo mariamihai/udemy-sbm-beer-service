@@ -77,7 +77,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
          showInventoryOnHand=[boolean]
     
  * __Success response:__
-    * Code: 200 <br/>
+    * Code: 200 OK <br/>
     * Content:
        ``` 
        {
@@ -144,7 +144,6 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
        }
        ```
  
- 
  `pageNumber` defaults to `0`.
  
  `pageSize` defaults to `25`.
@@ -167,7 +166,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
          showInventoryOnHand=[boolean]
     
  * __Success response:__
-    * Code: 200 <br/>
+    * Code: 200 OK <br/>
     * Content:
        ``` 
        {
@@ -201,7 +200,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
          showInventoryOnHand=[boolean]
             
  * __Success response:__
-    * Code: 200 <br/>
+    * Code: 200 OK <br/>
     * Content:
        ``` 
        {
