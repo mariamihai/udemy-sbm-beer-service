@@ -10,12 +10,17 @@ Spring Boot Microservice project.
   - [Implementation details](#implementation-details)
     - [Properties](#properties)
     - [Environment variables for running locally](#environment-variables-for-running-locally)
-    - [API calls](#api-calls)
-      - [Obtain all beers](#obtain-all-beers)
-      - [Obtain beer by id](#obtain-beer-by-id)
-      - [Obtain beer by upc](#obtain-beer-by-upc)
-      - [Save new beer](#save-new-beer)
-      - [Update beer](#update-beer)
+    - [Profiles](#profiles)
+    - [Additional applications needed](#additional-applications-needed)
+      - [MySQL](#mysql)
+      - [JMS with ActiveMQ Artemis](#jms-with-activemq-artemis)
+      - [Distributed Tracing with Spring Cloud Sleuth and Zipkin](#distributed-tracing-with-spring-cloud-sleuth-and-zipkin)
+  - [API calls](#api-calls)
+    - [Obtain all beers](#obtain-all-beers)
+    - [Obtain beer by id](#obtain-beer-by-id)
+    - [Obtain beer by upc](#obtain-beer-by-upc)
+    - [Save new beer](#save-new-beer)
+    - [Update beer](#update-beer)
 
 ## Description
 The current project is part of the "Spring Boot Microservices with Spring Cloud" [Udemy course](https://www.udemy.com/course/spring-boot-microservices-with-spring-cloud-beginner-to-guru/). 
@@ -57,8 +62,57 @@ server.port=8080
 `INVENTORY_SERVICE_HOST` was added to be used both for Docker and when running locally to set the host. For local use, 
 the value should be `http://localhost:8082`. For creating a Docker container, the value is set in the docker-compose file.
 
-### API calls
-#### Obtain all beers
+### Profiles
+Active profiles: `local`, `local-discovery`.
+
+(The `localmysql` profile was used for the local MySQL connection when starting to develop the services and breaking 
+the monolith, the `local` profile is obtained from the Config Service and it is used currently.)
+
+### Additional applications needed
+#### MySQL
+When running locally, I am using a Docker container for the MySQL databases. Check the Docker Hub [MySQL page](https://hub.docker.com/_/mysql).
+
+Creating the container:
+```
+docker run -p 3306:3306 --name beer-mysql -e MYSQL_ROOT_PASSWORD=root_pass -d mysql:8
+```
+
+The initial script for the project's database is under `src/main/scripts/mysql-init.sql` file.
+
+| Property | Value | 
+| --------| -----|
+| database name | beerservice |
+| port | 3306 (default) |
+| username | beer_service |
+| password | password | 
+
+#### JMS with ActiveMQ Artemis
+JMS is used for communication with the Beer Inventory Service and Beer Order Service.
+
+Creating the container:
+```
+docker run -it --rm -p 8161:8161 -p 61616:61616 vromero/activemq-artemis
+```
+
+The queues related to the current project are:
+- `brewing-request` - send a brew request to make more inventory
+- `new-inventory` - send update with the newly brewed beers to the Beer Inventory Service
+- `validate-order` - receive request for validating an order from the Beer Order Service
+- `validate-order-result` - sending the result back to the Beer Order Service
+
+| Property | Value | 
+| --------| -----|
+| username | artemis |
+| password | simetraehcapa | 
+
+#### Distributed Tracing with Spring Cloud Sleuth and Zipkin
+Creating the Zipkin container:
+```
+docker run --name zipkin -p 9411:9411 openzipkin/zipkin
+```
+
+## API calls
+### Obtain all beers
  * __URI:__ _/api/v1/beer/_
 
  * __Method:__ _GET_
@@ -150,7 +204,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
 
  `showInventoryOnHand` defaults to `false`.
     
-#### Obtain beer by id
+### Obtain beer by id
  * __URI:__ _/api/v1/beer/:beerId/_
 
  * __Method:__ _GET_
@@ -184,7 +238,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
        
  `showInventoryOnHand` defaults to `false`.
     
-#### Obtain beer by upc
+### Obtain beer by upc
  * __URI:__ _/api/v1/beer/beerUpc/:upc/_
 
  * __Method:__ _GET_
@@ -218,7 +272,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
        
  `showInventoryOnHand` defaults to `false`.
     
-#### Save new beer
+### Save new beer
  * __URI:__ _/api/v1/beer/_
 
  * __Method:__ _POST_
@@ -292,7 +346,7 @@ the value should be `http://localhost:8082`. For creating a Docker container, th
   
  `BeerStyle`, `upc` and `price` are valid when not null.     
      
-#### Update beer
+### Update beer
  * __URI:__ _/api/v1/beer/:beerId_
 
  * __Method:__ _PUT_
